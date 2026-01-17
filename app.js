@@ -105,6 +105,31 @@ function updateStatus(id, newStatus) {
     displayTasks();
 }
 
+// checks for overdue tasks
+function checkOverdueTasks() {
+  let today = new Date().toISOString().split("T")[0];
+
+  tasks.forEach(function (task) {
+    if (task.deadline < today && task.status !== "Completed") {
+      task.status = "Overdue";
+    }
+  });
+}
+
+// saves tasks to local storage
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// clears form
+function clearForm() {
+  taskNameInput.value = "";
+  categoryInput.value = "";
+  deadlineInput.value = "";
+}
+
+displayTasks();
+
 
 
 
