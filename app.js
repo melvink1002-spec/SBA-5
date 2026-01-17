@@ -12,6 +12,12 @@ let filterCategory = document.getElementById("filterCategory");
 // Data
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+// Event lisenters
+addTaskBtn.addEventListener("click", addTask);
+filterStatus.addEventListener("change", displayTasks);
+filterCategory.addEventListener("inout", displayTasks);
+
+
 
 
 
