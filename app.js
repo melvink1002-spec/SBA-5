@@ -15,9 +15,9 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 // Event lisenters
 addTaskBtn.addEventListener("click", addTask);
 filterStatus.addEventListener("change", displayTasks);
-filterCategory.addEventListener("inout", displayTasks);
+filterCategory.addEventListener("input", displayTasks);
 
-// addTask function
+// add task function
 function addTask() {
     let name = taskNameInput.value;
     let category = categoryInput.value;
@@ -43,6 +43,7 @@ function addTask() {
     clearForm();
 }
 
+// display tasks function
 function displayTasks() {
     taskList.innerHTML = "";
     checkOverdueTasks();
@@ -59,6 +60,49 @@ function displayTasks() {
 
         return statusMatch && categoryMatch;
     });
+
+    // filter tasks function
+    filteredTasks.forEach(function (task) {
+        let li = document.createElement("li");
+
+        if (task.status === "Overdue") {
+            li.classList.add("overdue");
+        }
+
+        li.innerHTML = `
+  <span>
+    <strong>${task.name}</strong> |
+    ${task.category} |
+    ${task.deadline} |
+    ${task.status}
+  </span>
+
+  <select>
+    <option value="In Progress">In Progress</option>
+    <option value="Completed">Completed</option>
+  </select>
+`;
+
+        let select = li.querySelector("select");
+        select.value = task.status;
+
+        select.addEventListener("change", function () {
+            updateStatus(task.id, this.value);
+        });
+
+        taskList.appendChild(li);
+    });
+}
+
+// status updating function
+function updateStatus(id, newStatus) {
+    let task = tasks.find(function (task) {
+        return task.id === id;
+    });
+
+    task.status = newStatus;
+    saveTasks();
+    displayTasks();
 }
 
 
